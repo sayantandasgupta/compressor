@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -9,10 +10,15 @@ string readFile(string filePath) {
 
     file.open(filePath);
 
-    if(file) {
+    if(file.is_open()) {
         string fileData;
-        file >> fileData;
+        string x;
 
+        while(file) {
+            getline(file, x);
+            fileData += x;
+        }
+        
         return fileData;
     }
 
@@ -20,16 +26,32 @@ string readFile(string filePath) {
     return "";
 }
 
+map<char, long> countCharFrequency(string fileData) {
+    map<char, long> res;
+    long len = fileData.length();
+
+    for(long i=0;i<len;i++) {
+        res[fileData[i]]++;
+    }
+
+    return res;
+}
+
 int main() {
     
     string path_to_file, file_data;
+    map<char, long> char_frequency;
 
     cout<<"Enter file path: ";
     cin>>path_to_file;
 
     file_data = readFile(path_to_file);
 
-    cout<<file_data[0]<<endl;
+    char_frequency = countCharFrequency(file_data);
+
+    
+    cout<<"X frequency: "<<char_frequency.find('X')->second<<endl;
+    cout<<"t frequency: "<<char_frequency.find('t')->second<<endl;
 
     return 0;
 }
