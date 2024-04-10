@@ -28,15 +28,19 @@ class HuffmanLeafNode(HuffmanBaseNode):
 
     def __init__(self, element : str, weight : int) -> None:
         self.element = element
-        self.weight = weight
+        self.wt = weight
 
     @property
     def element(self) -> str:
         return self._element
     
+    @element.setter
+    def element(self, value):
+        self._element = value
+    
 
     def weight(self) -> int:
-        return self.weight
+        return self.wt
     
     def isleaf(self) -> bool:
         return True
@@ -58,18 +62,26 @@ class HuffmanInternalNode(HuffmanBaseNode):
     def __init__(self, left : HuffmanBaseNode, right : HuffmanBaseNode, weight : int) -> None:
         self.left = left
         self.right = right
-        self.weight = weight
+        self.wt = weight
 
     @property
     def left(self) -> HuffmanBaseNode:
         return self._left
     
+    @left.setter
+    def left(self, value : HuffmanBaseNode):
+        self._left = value
+    
     @property
     def right(self) -> HuffmanBaseNode:
         return self._right
     
+    @right.setter
+    def right(self, value : HuffmanBaseNode):
+        self._right = value
+    
     def weight(self) -> int:
-        return self.weight
+        return self.wt
     
     def isleaf(self) -> bool:
         return False
@@ -82,15 +94,21 @@ class HuffmanTree:
         Class to Implement the Huffman Tree
     '''
 
-    def __init__(self, element : str, weight: int) -> None:
-        self.root = HuffmanLeafNode(element=element, weight=weight)
-
-    def __init__(self, l : HuffmanBaseNode, r : HuffmanBaseNode, wt : int) -> None:
-        self.root = HuffmanInternalNode(left=l, right=r, weight=wt)
+    def __init__(self, *args) -> None:
+        if len(args) == 2:
+            element, weight = args
+            self.root = HuffmanLeafNode(element=element, weight=weight)
+        else:
+            left, right, weight = args
+            self.root = HuffmanInternalNode(left=left, right=right, weight=weight)
 
     @property
     def root(self):
         return self._root
+    
+    @root.setter
+    def root(self, value):
+        self._root = value
     
     def weight(self):
         return self.root.weight()
